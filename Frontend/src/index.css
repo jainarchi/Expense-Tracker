@@ -6,7 +6,7 @@
 @theme{
      --font-display: "Rubik", sans-serif;
      --break-point-3xl : 1920px ;
-     --primary-color : #875cf5
+     --color-primary: #875cf5;
 }
 
 
@@ -16,7 +16,15 @@
 
     }
     body{
-        background-color: #602860;
+        background-color: rgb(238, 233, 243);
         overflow-x: hidden;
     }
+}
+
+.input-box {
+    @apply w-full flex justify-between text-sm text-black bg-slate-100 rounded px-4 py-3 mb-4 mt-2 border border-slate-200 ;
+}
+
+.btn-primary{
+    @apply w-full py-3 font-semibold text-white bg-primary rounded-[4px] 
 }
