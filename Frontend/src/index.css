@@ -26,5 +26,5 @@
 }
 
 .btn-primary{
-    @apply w-full py-3 font-semibold text-white bg-primary rounded-[4px] 
+    @apply w-full py-3 font-semibold text-white bg-primary rounded-[4px] hover:bg-violet-400
 }

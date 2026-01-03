@@ -2,7 +2,7 @@ import React from 'react'
 import { useState } from 'react';
 import {FaRegEye , FaRegEyeSlash} from 'react-icons/fa6'
 
-const Input = ({value , onChange , label , placeholder , type}) => {
+const Input = ({value , onChange ,type , label , placeholder}) => {
   const [showPassword , setShowPassword] = useState(false);
 
 
@@ -23,7 +23,7 @@ const Input = ({value , onChange , label , placeholder , type}) => {
          placeholder = {placeholder}
          className='outline-none'
          value={value}
-         onChange={(e) => onChange(e)}
+         onChange={(e) => onChange(e)}              // this catch the brower events and it's a callback function present in parent (as prop drilling from p -> c)
         />
 
          { type === 'password' && (

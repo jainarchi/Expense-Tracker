@@ -34,7 +34,7 @@ const AuthLayouts = ({children}) => {
 
 
         <img src={Card2}
-         className='w-64 lg:w-[90%] absolute bottom-10 shadow-lg shadow-blue-400'
+         className='w-64 lg:w-[90%] absolute bottom-10 shadow-lg shadow-blue-400 rounded-xl'
          alt="card2" 
          />
 
