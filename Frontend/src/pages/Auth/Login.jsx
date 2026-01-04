@@ -36,6 +36,7 @@ const Login = () => {
         </p>
 
         <div className="login-form w-full ">
+
           <form onSubmit={handleLogin}>
             <Input
               value={email}
@@ -57,9 +58,9 @@ const Login = () => {
               LOGIN
             </button>
 
-            <p className="mt-2">
+            <p className="mt-2 text-sm">
               Don't have an account?{" "}
-              <Link className="text-md text-violet-800 underline" to="/signup">
+              <Link className="text-sm text-violet-800 underline" to="/signup">
                 SignUp
               </Link>
             </p>

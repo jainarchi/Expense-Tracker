@@ -31,13 +31,10 @@ const AuthLayouts = ({children}) => {
             />
         </div>
 
-
-
         <img src={Card2}
          className='w-64 lg:w-[90%] absolute bottom-10 shadow-lg shadow-blue-400 rounded-xl'
          alt="card2" 
          />
-
 
      </div>
     </div>

@@ -1,0 +1,25 @@
+# Dependencies
+node_modules/
+
+# Environment Variables (Security)
+.env
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Mac System Files
+.DS_Store
+
+# IDE Settings
+.vscode/
+.idea/
+
+# Production/Build folder (If any)
+dist/
+build/
+
+# Uploaded Files (Multer storage)
+uploads/
+temp/
