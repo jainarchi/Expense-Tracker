@@ -1,16 +1,27 @@
-import React from "react";
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import React , { useContext, useState } from "react";
+import { Link , useNavigate} from "react-router-dom";
 import AuthLayouts from "../../components/layouts/AuthLayouts";
 import Input from "../../components/Inputs/Input";
 import { validateEmail, validatePassword } from "../../utils/helper";
+import axiosInstance from "../../utils/axiosInstance";
+import { API_PATHS } from "../../utils/apiPaths";
+import { UserContext } from "../../context/userContext";
+
+
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
 
-  let handleLogin = (e) => {
+  const { updateUser } = useContext(UserContext);
+
+   const navigate = useNavigate();
+
+
+
+
+  let handleLogin = async (e) => {
     e.preventDefault();
 
     if (!validateEmail(email)) {
@@ -24,8 +35,35 @@ const Login = () => {
     }
 
     setError("");
-    // Login API call
+   
+
+      // Login Api call 
+
+      try{
+        const response = await axiosInstance.post(API_PATHS.AUTH.LOGIN , {
+          email,
+          password,
+        });
+        const {token ,user} = response.data ;
+
+      if(token){
+        localStorage.setItem("token" , token);
+        updateUser(user);
+        navigate("/dashboard");
+      }
+
+      }
+      catch (error){
+        if(error.response && error.response.data.message){
+          setError(error.response.data.message);
+        }else{
+          setError("Something went wrong. Please try again.");
+        }
+      }
+      
   };
+
+
 
   return (
     <AuthLayouts>
