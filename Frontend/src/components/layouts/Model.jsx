@@ -18,7 +18,7 @@ const Model = ({ children, isOpen, onClose, title }) => {
 
                         <button
                             type="button"
-                            className='text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer '
+                            className='text-gray-400 bg-transparent hover:text-primary rounded-lg text-sm w-8 h-8 inline-flex justify-center items-center cursor-pointer '
                             onClick={onClose}
                         >
                             close
