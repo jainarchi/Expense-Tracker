@@ -36,7 +36,7 @@ axiosInstance.interceptors.response.use(
     },
     (error) =>{
         // Handle common err globally
-        if(error.resonse){
+        if(error.response){
             if(error.response.status === 401){ 
                 window.location.href = "/login";
             }else if(error.response.status === 500){

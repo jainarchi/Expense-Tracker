@@ -29,7 +29,7 @@ const SideMenu = ({ activeMenu }) => {
 
 
   return (
-    <div className='w-64 h-[calc(100vh-61px)] bg-white border-r border-gray-200/50 p-5 sticky top-[61px] -left-2 z-20'>
+    <div className='w-64 h-[calc(100vh-61px)] bg-white border-r border-gray-200/50 p-5 sticky top-[61px] -left-2 z-99'>
 
       <div className='flex flex-col items-center justify-center gap-2 mt-2 mb-4'>
 
