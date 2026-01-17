@@ -4,17 +4,14 @@ const bcrypt = require("bcryptjs");
 
 
 
-
 const generateToken = (id) => {
-    return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "1h" })
+    return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "48h" })
 };
 
 
 
-
-
 exports.registerUser = async (req, res) => {
-    const { fullName, email, password, profileImageUrl } = req.body;
+    const { fullName, email, password } = req.body;
 
     if (!fullName || !email || !password) {
         return res.status(400).json({ message: "All fields are requied" })
@@ -25,18 +22,22 @@ exports.registerUser = async (req, res) => {
         if (isUserExist) {
             return res.status(400).json({ message: "Email already in use" })
         }
-    
-        const hashPassword = await bcrypt.hash(password , 10);
+
+        const hashPassword = await bcrypt.hash(password, 10);
 
         const user = await User.create({
             fullName,
             email,
-            password : hashPassword,
-            profileImageUrl,
+            password: hashPassword,
+
         });
+
+        const userWithoutPassword = user.toObject();
+        delete userWithoutPassword.password;
+
         res.status(201).json({
             id: user._id,
-            user,
+            user: userWithoutPassword,
             token: generateToken(user._id),
         });
     }
@@ -49,51 +50,54 @@ exports.registerUser = async (req, res) => {
 };
 
 
-exports.loginUser = async (req, res) => { 
-    const {email , password} = req.body;
-    
+exports.loginUser = async (req, res) => {
+    const { email, password } = req.body;
 
-    if(!email || !password){
-        return res.status(400).json({message: "All fields are required"})
+
+    if (!email || !password) {
+        return res.status(400).json({ message: "All fields are required" })
     }
 
-    try{
-        const user = await User.findOne({email});
+    try {
+        const user = await User.findOne({ email });
 
-         if(! user || ! (await bcrypt.compare(password , user.password))){
-            return res.status(400).json({message: "invalid credentials"})
-         }
+        if (!user || !(await bcrypt.compare(password, user.password))) {
+            return res.status(400).json({ message: "invalid credentials" })
+        }
+
+        const userWithoutPassword = user.toObject();
+        delete userWithoutPassword.password;
 
         res.status(200).json({
             id: user._id,
-            user,
+            user : userWithoutPassword,
             token: generateToken(user._id),
         });
-    }catch (err) {
-      res
-        .status(500)
-        .json({message: "Error registering user" , error: err.message})
+    } catch (err) {
+        res
+            .status(500)
+            .json({ message: "Error registering user", error: err.message })
     }
 
 
 };
 
 
-exports.getUserInfo = async (req, res) => { 
-   
-    try{
+exports.getUserInfo = async (req, res) => {
+
+    try {
         const user = await User.findById(req.user.id).select("-password");
 
-        if(!user) {
-            return res.status(404).json({message: "User not found"});
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
         }
 
         res.status(200).json(user);
     }
-    catch(err){
+    catch (err) {
         res
-        .status(500)
-        .json({message: "Error registering user" , error: err.message });
+            .status(500)
+            .json({ message: "Error registering user", error: err.message });
     }
 
 

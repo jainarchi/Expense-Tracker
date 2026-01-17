@@ -1,4 +1,4 @@
-import React , {useState , useEffect} from 'react'
+import { useState, useEffect } from 'react'
 import DashboardLayout from '../../components/layouts/DashboardLayout'
 import IncomeOverview from '../../components/Income/IncomeOverview'
 import axiosInstance from '../../utils/axiosInstance';
@@ -8,7 +8,7 @@ import AddIncomeForm from '../../components/Income/AddIncomeForm'
 import { toast } from 'react-hot-toast';
 import IncomeList from '../../components/Income/IncomeList'
 import DeleteAlert from '../../components/layouts/DeleteAlert'
-import {useUserAuth} from '../../hooks/useUserAuth'
+import { useUserAuth } from '../../hooks/useUserAuth'
 
 
 
@@ -21,49 +21,30 @@ const Income = () => {
     show: false,
     data: null,
   });
-  const [openAddIncomeModel, setOpenAddIncomeModel] = useState(true)
-  
+  const [openAddIncomeModel, setOpenAddIncomeModel] = useState(false)
 
-  // get all Income details
-  const fetchIncomeDetails = async () =>{
-    if(loading ) return ;
 
-    setLoading(true);
-    try{
-      const response = await axiosInstance.get(`${API_PATHS.INCOME.GET_ALL_INCOME}`);
 
-      if(response.data){
-        setIncomeData(response.data);
-      }
-    }catch(error){
-      console.log("Something went wrong. Please try again." , error)
-    }finally{
-      setLoading(false);
-    }
+  const handleAddIncome = async (income) => {
+    const { source, amount, date, icon } = income;
 
-  }
-  
-  const handleAddIncome = async (income) =>{
-    const {source , amount , date , icon} = income;
-
-    //Validate Checks
-    if(!source.trim()){
+    if (!source.trim()) {
       toast.error("Source is required.");
       return;
     }
 
-    if(! amount || isNaN(amount) || Number(amount) <= 0 ){
+    if (!amount || isNaN(amount) || Number(amount) <= 0) {
       toast.error("Amount should be a valid number greater than 0.")
       return;
     }
 
-    if(! date){
+    if (!date) {
       toast.error("Date is required.");
       return;
     }
 
-    try{
-      await axiosInstance.post(API_PATHS.INCOME.ADD_INCOME , {
+    try {
+      await axiosInstance.post(API_PATHS.INCOME.ADD_INCOME, {
         source,
         amount,
         date,
@@ -73,23 +54,23 @@ const Income = () => {
       setOpenAddIncomeModel(false);
       toast.success("Income added successfully");
       fetchIncomeDetails();
-    }catch(err){
-      console.error("Error adding income: " , 
+    } catch (err) {
+      console.error("Error adding income: ",
         err.response?.data?.message || err.message
       );
     }
 
   }
 
-  const deleteIncome = async (id) =>{
-    try{
+  const deleteIncome = async (id) => {
+    try {
       await axiosInstance.delete(API_PATHS.INCOME.DELETE_INCOME(id))
 
-      setOpenDeleteAlert({show: false , data:null});
+      setOpenDeleteAlert({ show: false, data: null });
       toast.success("Income details deleted successfully");
       fetchIncomeDetails();
 
-    }catch(error){
+    } catch (error) {
       console.error(
         "Error deleting income:",
         error.response?.data?.message || error.message
@@ -98,17 +79,36 @@ const Income = () => {
 
   }
 
-  const handleDownloadIncomeDetails = async () =>{
+  const handleDownloadIncomeDetails = async () => {
 
   }
-  
+
 
   useEffect(() => {
+    const fetchIncomeDetails = async () => {
+      if (loading) return;
+
+      setLoading(true);
+      try {
+        const response = await axiosInstance.get(`${API_PATHS.INCOME.GET_ALL_INCOME}`);
+
+        if (response.data) {
+          setIncomeData(response.data);
+        }
+      } catch (error) {
+        console.log("Something went wrong. Please try again.", error)
+      } finally {
+        setLoading(false);
+      }
+    }
+
+
     fetchIncomeDetails();
-  
-    return () => {}
+
+    return () => { }
   }, [])
-  
+
+
 
 
   return (
@@ -117,43 +117,42 @@ const Income = () => {
         <div className='my-5 mx-auto'>
           <div className='grid grid-cols-1 gap-6'>
             <div className=''>
-
-              <IncomeOverview 
-               transactions={incomeData}
-               onAddIncome={() => setOpenAddIncomeModel(true)}
+              <IncomeOverview
+                transactions={incomeData}
+                onAddIncome={() => setOpenAddIncomeModel(true)}
               />
 
             </div>
 
-              <IncomeList 
+            <IncomeList
               transactions={incomeData}
               onDelete={(id) => {
-                setOpenDeleteAlert({show: true , data: id});
+                setOpenDeleteAlert({ show: true, data: id });
               }}
-              onDownload={handleDownloadIncomeDetails}             
-              />
+              onDownload={handleDownloadIncomeDetails}
+            />
 
-          </div> 
+          </div>
 
 
-          <Model 
+          <Model
             isOpen={openAddIncomeModel}
             onClose={() => setOpenAddIncomeModel(false)}
             title="Add Income"
-            >
-              <AddIncomeForm onAddIncome={handleAddIncome} />
-           </Model>
-            
-            <Model
+          >
+            <AddIncomeForm onAddIncome={handleAddIncome} />
+          </Model>
+
+          <Model
             isOpen={openDeleteAlert.show}
-            onClose={() => setOpenAddIncomeModel({show: false , data: null})}
+            onClose={() => setOpenAddIncomeModel({ show: false, data: null })}
             title="Delete Income"
-            >
-              <DeleteAlert 
-                content="Are your sure you want to delete this income details ?"  
-                onDelete={() => deleteIncome(openDeleteAlert.data)}
-                />
-            </Model>
+          >
+            <DeleteAlert
+              content="Are your sure you want to delete this income details ?"
+              onDelete={() => deleteIncome(openDeleteAlert.data)}
+            />
+          </Model>
 
 
 
@@ -161,11 +160,11 @@ const Income = () => {
 
         </div>
 
-       
+
       </DashboardLayout>
 
-       </div>
-    
+    </div>
+
   )
 }
 

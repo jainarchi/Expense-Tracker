@@ -1,5 +1,5 @@
-import React , { useContext, useState } from "react";
-import { Link , useNavigate} from "react-router-dom";
+import React, { useContext, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import AuthLayouts from "../../components/layouts/AuthLayouts";
 import Input from "../../components/Inputs/Input";
 import { validateEmail, validatePassword } from "../../utils/helper";
@@ -16,7 +16,7 @@ const Login = () => {
 
   const { updateUser } = useContext(UserContext);
 
-   const navigate = useNavigate();
+  const navigate = useNavigate();
 
 
 
@@ -30,37 +30,34 @@ const Login = () => {
     }
 
     if (!validatePassword(password)) {
-      setError( "Password must be at least 8 characters and contain only letters and numbers.");
+      setError("Password must be at least 8 characters and contain only letters and numbers.");
       return;
     }
 
     setError("");
-   
 
-      // Login Api call 
+    try {
+      const response = await axiosInstance.post(API_PATHS.AUTH.LOGIN, {
+        email,
+        password,
+      });
+      const { token, user } = response.data;
 
-      try{
-        const response = await axiosInstance.post(API_PATHS.AUTH.LOGIN , {
-          email,
-          password,
-        });
-        const {token ,user} = response.data ;
-
-      if(token){
-        localStorage.setItem("token" , token);
+      if (token) {
+        localStorage.setItem("token", token);
         updateUser(user);
         navigate("/dashboard");
       }
 
+    }
+    catch (error) {
+      if (error.response && error.response.data.message) {
+        setError(error.response.data.message);
+      } else {
+        setError("Something went wrong. Please try again.");
       }
-      catch (error){
-        if(error.response && error.response.data.message){
-          setError(error.response.data.message);
-        }else{
-          setError("Something went wrong. Please try again.");
-        }
-      }
-      
+    }
+
   };
 
 
