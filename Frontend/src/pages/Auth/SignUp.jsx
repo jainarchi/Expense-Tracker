@@ -3,7 +3,6 @@ import { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AuthLayouts from "../../components/layouts/AuthLayouts";
 import Input from '../../components/Inputs/Input';
-import ProfilePhotoSelector from '../../components/Inputs/ProfilePhotoSelector';
 import { validateEmail, validatePassword, validateName } from "../../utils/helper";
 import axiosInstance from '../../utils/axiosInstance';
 import { API_PATHS } from '../../utils/apiPaths';
@@ -11,9 +10,7 @@ import { UserContext } from "../../context/userContext";
 
 
 
-
 const SignUp = () => {
-  const [profilePic, setProfilePic] = useState(null)
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -89,12 +86,6 @@ const SignUp = () => {
           <div className="signup-form w-full ">
 
             <form onSubmit={handleSignUp}>
-
-
-              <ProfilePhotoSelector
-                image={profilePic}
-                setImage={setProfilePic} />
-
 
               <div className='grid grid-cols-1 md:grid-cols-2 gap-x-4'>
 

@@ -46,8 +46,10 @@ exports.registerUser = async (req, res) => {
             .status(500)
             .json({ message: "Error registering user", error: err.message })
     }
-
 };
+
+
+
 
 
 exports.loginUser = async (req, res) => {

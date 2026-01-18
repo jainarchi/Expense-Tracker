@@ -55,13 +55,6 @@ const AddIncomeForm = ({onAddIncome}) => {
 
      </div>
 
-
-
-
-
-
-
-
     </div>
 
   

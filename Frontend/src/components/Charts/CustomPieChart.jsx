@@ -40,7 +40,7 @@ const CustomPieChart = ({
                 {showTextAnchor && (
                     <>
                         <text
-                            x="50%"
+                            x="43%"
                             y="50%"
                             dy={-25}
                             textAnchor='="middle'
@@ -50,7 +50,7 @@ const CustomPieChart = ({
                             {label}
                         </text>
                         <text
-                            x="50%"
+                            x="43%"
                             y="50%"
                             dy={8}
                             textAnchor='="middle'

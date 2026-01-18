@@ -8,12 +8,12 @@ import InfoCard from '../../components/cards/InfoCards';
 import { addThousandsSeparator } from '../../utils/helper';
 import RecentTransactions from '../../components/Dashboard/RecentTransactions'
 import FinanceOverview from '../../components/Dashboard/FinanceOverview'
-import ExpenseTransactions from '../../components/Dashboard/ExpenseTransactions'
+import ExpenseTransactions from '../../components/Dashboard/RecentExpense'
 
 import { LuHandCoins, LuWalletMinimal } from 'react-icons/lu';
 import { IoMdCard } from 'react-icons/io'
 import Last30DaysExpense from '../../components/Dashboard/Last30DaysExpense';
-import RecentIncomeWithChart from '../../components/Dashboard/RecentIncomeWithChart'
+import RecentIncomeWithChart from '../../components/Dashboard/Last60DaysIncome'
 import RecentIncome from '../../components/Dashboard/RecentIncome'
 
 const Home = () => {
@@ -53,7 +53,10 @@ const Home = () => {
 
   return (
     <>
+      
       <DashboardLayout activeMenu="Dashboard">
+        
+
         <div className='my-5 mx-auto'>
           <div className='grid grid-cols-1 md:grid-cols-3 gap-6'>
 
@@ -67,7 +70,7 @@ const Home = () => {
             <InfoCard
               icon={<LuWalletMinimal />}
               label="Total Income"
-              value={addThousandsSeparator(dashboardData?.totalBalance || 0)}
+              value={addThousandsSeparator(dashboardData?.totalIncome || 0)}
               color='bg-orange-500'
             />
 
@@ -75,7 +78,7 @@ const Home = () => {
             <InfoCard
               icon={<LuHandCoins />}
               label="Total Expense"
-              value={addThousandsSeparator(dashboardData?.totalBalance || 0)}
+              value={addThousandsSeparator(dashboardData?.totalExpense || 0)}
               color='bg-red-500'
             />
 
@@ -83,7 +86,7 @@ const Home = () => {
 
           <div className='grid grid-cols-1 md:grid-cols-2 gap-6 mt-6'>
             <RecentTransactions
-            transactions={dashboardData?.RecentTransactions}
+            transactions={dashboardData?.recentTransactions}
             onSeeMore={() =>navigate("/expense")}
             />
 

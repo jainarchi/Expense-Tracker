@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { SIDE_MENU_DATA } from '../../utils/data'
-import { UserContext } from "../../context/UserContext"
+import { UserContext } from "../../context/userContext"
 import { useNavigate } from 'react-router-dom'
 import CharAvatar from '../../components/cards/CharAvatar'
 
@@ -12,7 +12,8 @@ const SideMenu = ({ activeMenu }) => {
 
 
   const handleClick = (route) => {
-    if (route === "logout") {
+    if (route === "/logout") {
+      console.log('log out clicked !')
       handleLogout();
       return;
     }
@@ -20,7 +21,7 @@ const SideMenu = ({ activeMenu }) => {
   }
 
   const handleLogout = () => {
-    localStorage.clear();
+    localStorage.removeItem('token')
     clearUser();
     navigate("/login");
   };
@@ -33,15 +34,8 @@ const SideMenu = ({ activeMenu }) => {
 
       <div className='flex flex-col items-center justify-center gap-2 mt-2 mb-4'>
 
-        {user?.profileImageUrl ? (
-          <img
-            src={user?.profileImageUrl}
-            alt="Profile Image"
-            className='w-20 h-20 bg-slate-400 rounded-full'
-          />) : <CharAvatar
-              fullName={user?.fullName}
-              />
-        }
+        <CharAvatar fullName={user?.fullName} />
+        
 
         <h5 className='text-gray-950 font-medium leading-6 '>
           {user?.fullName || ""}

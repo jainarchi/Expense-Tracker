@@ -24,7 +24,7 @@ const Income = () => {
   const [openAddIncomeModel, setOpenAddIncomeModel] = useState(false)
 
 
-
+  
   const handleAddIncome = async (income) => {
     const { source, amount, date, icon } = income;
 
@@ -62,6 +62,25 @@ const Income = () => {
 
   }
 
+
+ const fetchIncomeDetails = async () => {
+      if (loading) return;
+
+      setLoading(true);
+      try {
+        const response = await axiosInstance.get(`${API_PATHS.INCOME.GET_ALL_INCOME}`);
+
+        if (response.data) {
+          setIncomeData(response.data);
+        }
+      } catch (error) {
+        console.log("Something went wrong. Please try again.", error)
+      } finally {
+        setLoading(false);
+      }
+    }
+
+
   const deleteIncome = async (id) => {
     try {
       await axiosInstance.delete(API_PATHS.INCOME.DELETE_INCOME(id))
@@ -85,24 +104,6 @@ const Income = () => {
 
 
   useEffect(() => {
-    const fetchIncomeDetails = async () => {
-      if (loading) return;
-
-      setLoading(true);
-      try {
-        const response = await axiosInstance.get(`${API_PATHS.INCOME.GET_ALL_INCOME}`);
-
-        if (response.data) {
-          setIncomeData(response.data);
-        }
-      } catch (error) {
-        console.log("Something went wrong. Please try again.", error)
-      } finally {
-        setLoading(false);
-      }
-    }
-
-
     fetchIncomeDetails();
 
     return () => { }

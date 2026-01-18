@@ -4,8 +4,6 @@ const { isValidObjectId, Types } = require("mongoose");
 
 
 
-
-// Dashboard Data
 exports.getDashboardData = async (req, res) => {
     try {
         const userId = req.user.id;
@@ -21,7 +19,7 @@ exports.getDashboardData = async (req, res) => {
         // Parallel execution (Promise.all) API ko fast banata hai
         const [totalIncomeResult, totalExpenseResult] = await Promise.all([
             Income.aggregate([
-                { $match: { userId: userObjectId } }, // Field name must be 'userId'
+                { $match: { userId: userObjectId } }, 
                 { $group: { _id: null, total: { $sum: "$amount" } } }
             ]),
             Expense.aggregate([
@@ -30,11 +28,10 @@ exports.getDashboardData = async (req, res) => {
             ])
         ]);
 
-        // Values nikalna (agar data na ho toh default 0)
+     
         const totalIncome = totalIncomeResult[0]?.total || 0;
         const totalExpense = totalExpenseResult[0]?.total || 0;
 
-        // 2. Income Transactions (Last 60 Days)
         const last60DaysIncomeTransactions = await Income.find({
             userId,
             date: { $gte: new Date(Date.now() - 60 * 24 * 60 * 60 * 1000) }
@@ -44,31 +41,35 @@ exports.getDashboardData = async (req, res) => {
             (sum, txn) => sum + txn.amount, 0
         );
 
-        // 3. Expense Transactions (Last 30 Days)
+
+
         const last30DaysExpenseTransactions = await Expense.find({
             userId,
             date: { $gte: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000) }
         }).sort({ date: -1 });
 
+
+
         const expenseLast30Days = last30DaysExpenseTransactions.reduce(
             (sum, txn) => sum + txn.amount, 0
         );
 
-        // 4. Fetch Recent 5 Transactions (Mix of Income & Expense)
+
+
         const [recentIncomes, recentExpenses] = await Promise.all([
             Income.find({ userId }).sort({ date: -1 }).limit(5),
             Expense.find({ userId }).sort({ date: -1 }).limit(5)
         ]);
 
-        // Data ko merge karna aur 'type' add karna
+
         const lastTransactions = [
             ...recentIncomes.map(txn => ({ ...txn.toObject(), type: "income" })),
             ...recentExpenses.map(txn => ({ ...txn.toObject(), type: "expense" }))
         ]
         .sort((a, b) => new Date(b.date) - new Date(a.date)) // Latest first
-        .slice(0, 5); // Sirf top 5 mix transactions
+        .slice(0, 5); 
 
-        // Final Response
+       
         res.status(200).json({
             totalBalance: totalIncome - totalExpense,
             totalIncome,
@@ -84,6 +85,8 @@ exports.getDashboardData = async (req, res) => {
             recentTransactions: lastTransactions,
         });
 
+
+        
     } catch (err) {
         console.error("Dashboard Error:", err);
         res.status(500).json({ 
