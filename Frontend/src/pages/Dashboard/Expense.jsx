@@ -82,6 +82,8 @@ const Expense = () => {
 
   }
 
+
+
   const deleteExpense = async (id) =>{
     try{
       await axiosInstance.delete(API_PATHS.EXPENSE.DELETE_EXPENSE(id))
@@ -98,6 +100,8 @@ const Expense = () => {
     }
 
   }
+
+
 
   const handleDownloadExpenseDetails = async () =>{
       // const url = window.URL.createObjectURL(new Blob([response.data]))
@@ -137,7 +141,7 @@ const Expense = () => {
             <ExpenseList 
             transactions={expenseData}
             onDelete={(id) =>{
-              setOpenDeleteAlert({shhow: true , data: id})
+              setOpenDeleteAlert({show: true , data: id})
             }}
             onDownload={handleDownloadExpenseDetails}
             />
@@ -160,7 +164,7 @@ const Expense = () => {
 
             <Model
             isOpen={openDeleteAlert.show}
-            onClose={() => setOpenAddExpenseModel({show: false , data: null})}
+            onClose={() => setOpenDeleteAlert({show: false , data: null})}
             title="Delete Expense"
             >
               <DeleteAlert 

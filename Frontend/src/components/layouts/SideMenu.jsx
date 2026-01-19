@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import CharAvatar from '../../components/cards/CharAvatar'
 
 
+
 const SideMenu = ({ activeMenu }) => {
 
   const {user, clearUser } = useContext(UserContext);
@@ -35,6 +36,7 @@ const SideMenu = ({ activeMenu }) => {
       <div className='flex flex-col items-center justify-center gap-2 mt-2 mb-4'>
 
         <CharAvatar fullName={user?.fullName} />
+       
         
 
         <h5 className='text-gray-950 font-medium leading-6 '>

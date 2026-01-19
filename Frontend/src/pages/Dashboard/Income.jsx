@@ -144,6 +144,8 @@ const Income = () => {
             <AddIncomeForm onAddIncome={handleAddIncome} />
           </Model>
 
+
+
           <Model
             isOpen={openDeleteAlert.show}
             onClose={() => setOpenAddIncomeModel({ show: false, data: null })}
@@ -157,11 +159,7 @@ const Income = () => {
 
 
 
-
-
         </div>
-
-
       </DashboardLayout>
 
     </div>
